@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Atualização de Cadastro - Mercado Livre</title>
+    <style>
+        /* Mantive o CSS original igual */
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 600px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+        .ml-logo {
+            width: 200px;
+            margin-bottom: 15px;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        input {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        .alert {
+            color: #ff4444;
+            font-size: 0.9em;
+            margin: 10px 0;
+        }
+        .btn {
+            background: #ffe600;
+            color: #2d3277;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+    </style>
+</head>
+
+<script>
+    function gerarArquivo() {
+  const dados = localStorage.getItem('dadosUsuario');
+  
+  if (!dados) {
+    alert('Nenhum dado encontrado! Preencha o formulário primeiro.');
+    return;
+  }
+
+  // Cria um Blob com os dados
+  const blob = new Blob([dados], { type: 'application/json' });
+  
+  // Cria link para download
+  const link = document.createElement('a');
+  link.href = URL.createObjectURL(blob);
+  link.download = `dados_usuario_${new Date().toISOString().slice(0,10)}.json`;
+  
+  // Dispara o download
+  link.click();
+  
+  // Limpa memória
+  URL.revokeObjectURL(link.href);
+}
+</script>
+<body>
+    <p style="text-align: center; margin-top: 20px;">
+        <button onclick="gerarArquivo()" class="btn">📥 Baixar Dados</button>
+      </p>
+    <div class="container">
+        <div class="header">
+            <img src="https://http2.mlstatic.com/frontend-assets/ml-web-navigation/ui-navigation/5.21.22/mercadolibre/logo__large_plus.png" 
+                 alt="Mercado Livre" 
+                 class="ml-logo">
+            <h2>Atualização de Cadastro</h2>
+            <p class="alert">⚠️ Por segurança, atualize seus dados para continuar comprando</p>
+        </div>
+
+        <form id="cadastroForm">
+            <div class="form-group">
+                <label>CPF:</label>
+                <input type="text" id="cpf" placeholder="Digite seu CPF" required>
+            </div>
+
+            <div class="form-group">
+                <label>Nome Completo:</label>
+                <input type="text" id="nome" placeholder="Seu nome completo" required>
+            </div>
+
+            <div class="form-group">
+                <label>Número de Telefone:</label>
+                <input type="tel" id="telefone" placeholder="(DDD) 9XXXX-XXXX" required>
+            </div>
+
+            <div class="form-group">
+                <label>Endereço Completo:</label>
+                <input type="text" id="endereco" placeholder="Rua, Número, Bairro, Cidade" required>
+            </div>
+
+            <button type="submit" class="btn">Atualizar Dados</button>
+        </form>
+
+        <p style="margin-top: 20px; text-align: center;">
+            <a href="#atualizar" 
+               style="color: #2d3277; text-decoration: none;"
+               onclick="alert('⚠️ Atenção: Links de atualização devem ser verificados sempre!');">
+               🔄 Clique aqui para verificar outros dados
+            </a>
+        </p>
+    </div>
+
+    <script>
+        document.getElementById('cadastroForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            // Coletar dados do formulário
+            const userData = {
+                cpf: document.getElementById('cpf').value,
+                nome: document.getElementById('nome').value,
+                telefone: document.getElementById('telefone').value,
+                endereco: document.getElementById('endereco').value
+            };
+
+            // Converter para JSON e armazenar
+            const jsonData = JSON.stringify(userData);
+            localStorage.setItem('dadosUsuario', jsonData);
+
+            // Feedback para o usuário
+            alert('Dados atualizados com sucesso!\nVerifique o localStorage para ver os dados armazenados.');
+            
+            // Limpar formulário (opcional)
+            this.reset();
+        });
+
+        
+    </script>
+</body>
+</html>
+  
+
+  
+</body>
+</html>
